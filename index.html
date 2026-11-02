@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Dompetku</title>
+  <meta name="description" content="Pencatatan dan pengelolaan keuangan pribadi sederhana">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👛</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div id="loading" class="center pad">Memuat…</div>
+
+  <!-- ================= Login / Daftar ================= -->
+  <section id="auth" class="auth hidden">
+    <div class="card auth-card">
+      <div class="logo">👛</div>
+      <h1>Dompetku</h1>
+      <p class="muted">Catat pemasukan &amp; pengeluaran harian, pantau anggaran.</p>
+      <form id="auth-form">
+        <label>Email
+          <input type="email" name="email" required autocomplete="email">
+        </label>
+        <label>Kata sandi
+          <input type="password" name="password" required minlength="6" autocomplete="current-password">
+        </label>
+        <button class="btn primary block" type="submit" id="auth-submit">Masuk</button>
+      </form>
+      <p class="small muted center">
+        <span id="auth-toggle-text">Belum punya akun?</span>
+        <a href="#" id="auth-toggle">Daftar</a>
+      </p>
+      <p id="auth-msg" class="small center"></p>
+    </div>
+  </section>
+
+  <!-- ================= Aplikasi ================= -->
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <h1 id="title">Beranda</h1>
+      <div class="month-nav">
+        <button id="prev-month" class="icon-btn" aria-label="Bulan sebelumnya">‹</button>
+        <span id="month-label"></span>
+        <button id="next-month" class="icon-btn" aria-label="Bulan berikutnya">›</button>
+      </div>
+    </header>
+
+    <main id="view"></main>
+
+    <button id="fab" class="fab" aria-label="Tambah transaksi">+</button>
+
+    <nav class="bottom-nav">
+      <button data-view="home" class="active"><span>🏠</span>Beranda</button>
+      <button data-view="tx"><span>📋</span>Transaksi</button>
+      <button data-view="budget"><span>🎯</span>Anggaran</button>
+      <button data-view="settings"><span>⚙️</span>Atur</button>
+    </nav>
+  </div>
+
+  <!-- ================= Form transaksi ================= -->
+  <dialog id="tx-dialog">
+    <form id="tx-form" novalidate>
+      <h2 id="tx-title">Tambah transaksi</h2>
+
+      <div class="seg" id="kind-seg">
+        <button type="button" data-kind="expense" class="active">Pengeluaran</button>
+        <button type="button" data-kind="income">Pemasukan</button>
+        <button type="button" data-kind="transfer">Transfer</button>
+      </div>
+
+      <label id="quick-wrap">Ketik cepat
+        <input id="quick" placeholder="mis. makan siang 25rb kemarin" autocomplete="off">
+      </label>
+
+      <label>Nominal (Rp)
+        <input id="amount" inputmode="numeric" placeholder="0" autocomplete="off">
+      </label>
+
+      <label id="cat-wrap">Kategori
+        <select id="category"></select>
+      </label>
+
+      <label><span id="wallet-label">Dompet</span>
+        <select id="wallet"></select>
+      </label>
+
+      <label id="to-wrap" class="hidden">Ke dompet
+        <select id="to-wallet"></select>
+      </label>
+
+      <label>Tanggal
+        <input type="date" id="date" required>
+      </label>
+
+      <label>Catatan
+        <input id="note" maxlength="200" autocomplete="off">
+      </label>
+
+      <p id="tx-msg" class="small error"></p>
+
+      <div class="row">
+        <button type="button" id="tx-delete" class="btn danger hidden">Hapus</button>
+        <span class="spacer"></span>
+        <button type="button" id="tx-cancel" class="btn">Batal</button>
+        <button type="submit" id="tx-save" class="btn primary">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
